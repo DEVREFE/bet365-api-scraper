@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apuestas Deportivas Argentinas</title>
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #333333; /* Dark Grey Background */
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #126e51; /* Bet365 Green */
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+        header .logo-text {
+            color: #ffdf1b; /* Bet365 Yellow */
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: #282828;
+        }
+        .league-header {
+            background-color: #444;
+            color: #ccc;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-bottom: 1px solid #555;
+            text-transform: uppercase;
+        }
+        .match-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #3c3c3c;
+            background-color: #282828;
+            cursor: pointer;
+        }
+        .match-row:hover {
+            background-color: #333;
+        }
+        .match-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .teams {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .team-name {
+            display: block;
+        }
+        .match-time {
+            font-size: 0.75rem;
+            color: #ffdf1b; /* Yellow for time/live */
+        }
+        .match-score {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffdf1b;
+            margin-left: 10px;
+            min-width: 40px;
+            text-align: right;
+        }
+        .odds-container {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px;
+        }
+        .odd-box {
+            background-color: #444;
+            color: #ffdf1b;
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            text-align: center;
+            min-width: 40px;
+        }
+        .odd-box:hover {
+            background-color: #555;
+        }
+        .empty-message {
+            padding: 20px;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span class="logo-text">bet</span>365 <span style="font-size: 0.8em; color: white; font-weight: normal;">Clone</span></h1>
+        <div style="font-size: 0.9rem;">Deportes</div>
+    </header>
+    <div class="container">
+        {% if matches %}
+            {% set current_league = namespace(value=None) %}
+            {% for match in matches %}
+                {% if match.get('CL') != current_league.value %}
+                    <div class="league-header">{{ match.get('CL', 'Liga Internacional') }}</div>
+                    {% set current_league.value = match.get('CL') %}
+                {% endif %}
+
+                <div class="match-row">
+                    <div class="match-info">
+                        <div class="teams">
+                            <span class="team-name">{{ match.get('T1', 'Local') }}</span>
+                            <span class="team-name">{{ match.get('T2', 'Visitante') }}</span>
+                        </div>
+                        <div class="match-time">
+                            {{ match.get('TM', 'En Vivo') }}
+                        </div>
+                    </div>
+
+                    <div class="match-score">
+                        <div>{{ match.get('SM', '0-0').split('-')[0] }}</div>
+                        <div>{{ match.get('SM', '0-0').split('-')[1] }}</div>
+                    </div>
+
+                    <!-- Placeholder odds to complete the look -->
+                    <div class="odds-container">
+                        <div class="odd-box">1.50</div>
+                        <div class="odd-box">3.20</div>
+                        <div class="odd-box">2.10</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-message">
+                No hay eventos disponibles en este momento.
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
